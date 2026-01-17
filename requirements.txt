@@ -1,0 +1,10 @@
+langchain
+langchain-openai
+langgraph
+pydantic
+python-dotenv
+pandas
+tiktoken
+tqdm
+datasets
+termcolor
