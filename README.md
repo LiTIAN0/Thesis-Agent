@@ -92,9 +92,6 @@ To view the statistical analysis and recreate the charts found in the thesis, op
 jupyter notebook experiments/ablation_lcb.ipynb
 
 ```
+---
 
 *Developed by Li Tian for the Master's Thesis, University of Helsinki.*
-
-```
-
-```
