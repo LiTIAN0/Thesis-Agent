@@ -28,7 +28,11 @@ def generator_node(state: AgentState):
     return {
         "draft_code": msg.content, 
         "iteration": state["iteration"] + 1,
-        "critiques": [] # Clear old critiques for new round
+        # "DELETE" command to forcibly clear the critiques list
+        # This ensures the Chairman only sees the evaluations from the current run of Critics
+        "critiques": "DELETE",
+        "safety_veto_triggered": False, # Also reset the safety flag
+        "critique_feedback": ""         # Reset feedback
     }
 
 # --- 2. DYNAMIC CRITIC FACTORY ---
@@ -59,6 +63,8 @@ def make_critic_node(node_name: str, persona_key: str = None):
             result = CritiqueResult(is_passing=False, feedback="Format Error", safety_violation=False)
 
         tracker.log_usage(model, len(user_prompt)/4, 100)
+
+        result.critic_role = persona_key.capitalize() # e.g., "Security"
         return {"critiques": [result]} # Append to list
         
     return critic_func
@@ -74,45 +80,92 @@ def chairman_node(state: AgentState):
     
     critiques = state["critiques"]
     
-    # A. Check for Safety Veto (Trustworthiness check)
+    # 1. Parse individual expert decisions based on the 'critic_role' field
+    # We use deterministic logic rather than letting the LLM guess the consensus.
     safety_voted_fail = any(c.safety_violation for c in critiques)
     
-    # B. Prepare context for Chairman LLM
-    details = "\n".join([f"- Safety: {c.safety_violation}, Pass: {c.is_passing}, Feedback: {c.feedback}" for c in critiques])
+    logic_passed = True
+    style_passed = True
     
+    for c in critiques:
+        if c.critic_role == "Logic":
+            logic_passed = c.is_passing
+        elif c.critic_role == "Style":
+            style_passed = c.is_passing
+
+    # 2. Prepare detailed context for the Chairman LLM to summarize
+    details = "\n".join([
+        f"- Role: {c.critic_role}, Safety Veto: {c.safety_violation}, Pass: {c.is_passing}, Feedback: {c.feedback}" 
+        for c in critiques
+    ])
+    
+    # Initialize LLM with structured output
     llm = get_llm(CHAIRMAN_MODEL_NAME, temperature=0).with_structured_output(ChairmanOutput)
     
+    # 3. Priority Logic Gates (Deterministic Decision Making)
+    # This prevents hallucination and implements our Cost-Effective "Soft Constraint" strategy.
+    
     if safety_voted_fail:
-        # Force Veto Prompt
+        # HARD VETO: Absolute constraint. Stop execution immediately.
         prompt = (
             f"CRITICAL SAFETY VIOLATION DETECTED.\nDetails:\n{details}\n"
-            "You MUST decision 'FAIL'. Summarize the security risks."
+            "Your task is to summarize the security risks in 1-2 sentences. "
+            "You MUST output decision 'FAIL'."
         )
-    else:
-        # Standard Synthesis
-        prompt = (
-            f"Review these critiques:\n{details}\n"
-            "If majority pass, decision 'PASS'. Else 'FAIL' and summarize feedback."
-        )
+        final_decision = "FAIL"
+        print("    [Alert] Safety Veto Triggered! Hard FAIL.")
         
+    elif not logic_passed:
+        # HARD REQUIREMENT: Logic failed. The code MUST be rewritten by the Generator.
+        prompt = (
+            f"Logic failed. The code needs functional improvement.\nDetails:\n{details}\n"
+            "Your task is to summarize the logic bugs so the developer can fix them. "
+            "If there are style issues, mention them briefly as secondary tasks. "
+            "You MUST output decision 'FAIL'."
+        )
+        final_decision = "FAIL"
+        print("    [Info] Logic Failed. Triggering loop for code correction.")
+        
+    elif logic_passed and not style_passed:
+        # SOFT CONSTRAINT: Logic is correct, but Style failed (e.g., missing type hints).
+        # We OVERRIDE the Style Critic to save tokens and prevent an expensive fallback!
+        prompt = (
+            f"Logic passed, but Style failed.\nDetails:\n{details}\n"
+            "Summarize the minor style issues, but explicitly state that the core functionality is correct. "
+            "You MUST output decision 'PASS'."
+        )
+        final_decision = "PASS"
+        print("    [Info] Logic Passed but Style Failed. Overriding to PASS to save cost (Soft Constraint applied).")
+        
+    else:
+        # PERFECT PASS: All critics agreed the code is great.
+        prompt = (
+            f"All checks passed:\n{details}\n"
+            "Briefly summarize the success. You MUST output decision 'PASS'."
+        )
+        final_decision = "PASS"
+        print("    [Info] All checks passed. Proceeding to final output.")
+        
+    # 4. Invoke LLM exclusively for Natural Language Summarization (Feedback Generation)
     result = llm.invoke(prompt)
+    
+    # 5. Log usage (Original tracking mechanism preserved)
     tracker.log_usage(CHAIRMAN_MODEL_NAME, len(prompt)/4, len(result.consolidated_feedback)/4)
     
-    # Enforce Veto logic even if LLM hallucinates
-    final_decision = "FAIL" if safety_voted_fail else result.decision
+    print(f"    Final Decision: {final_decision} (Logic Failed: {not logic_passed})")
     
-    print(f"   Decision: {final_decision} (Safety Veto: {safety_voted_fail})")
-    
-    # If safety veto is triggered, we must ensure the router knows to STOP.
+    # 6. Return updated state
+    # Notice we pass `final_decision` (our hardcoded logic), NOT `result.decision` (which might hallucinate)
     return {
-        "final_decision": final_decision,
-        "critique_feedback": result.consolidated_feedback,
-        "safety_veto_triggered": safety_voted_fail  # <--- Update State
+        "final_decision": final_decision,       
+        "critique_feedback": result.consolidated_feedback, 
+        "safety_veto_triggered": safety_voted_fail,
+        "logic_failure_triggered": not logic_passed 
     }
 
 # --- 4. FALLBACK NODE ---
 def fallback_node(state: AgentState):
-    print("\n--- ESCALATION: GPT-4o ---")
+    print("\n--- ESCALATION ---")
     llm = get_llm(FALLBACK_MODEL_NAME, temperature=0.2)
     msg = llm.invoke(f"Solve this robustly: {state['task']}")
     tracker.log_usage(FALLBACK_MODEL_NAME, 100, len(msg.content)/4)

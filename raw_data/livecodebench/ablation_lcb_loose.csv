@@ -1,0 +1,252 @@
+Mode,Task ID,Difficulty,Success,Valid Success,Safety Veto,Logic Failure,Latency (s),Actual Cost ($),Savings (%),Iterations,Escalated,Error,Oracle Latency (s),Oracle Cost ($)
+baseline,sum-in-a-matrix,medium,0,0,0,0,4.41,0.00013155,91.04,1,0,"Test 1 Failed. Expected 15, Got 28. Input: [[7, 2, 1], [6, 4, 2], [6, 5, 3], [3, 2, 1]]",17.77,0.001445
+baseline,maximum-or,medium,0,0,0,0,2.74,0.00011612499999999999,91.19,1,0,"Test 1 Failed. Expected 30, Got 25. Input: [12, 9]
+1",17.56,0.001276
+baseline,maximum-strength-of-a-group,medium,1,1,0,0,1.4,7.467500000000001e-05,90.89,1,0,,16.84,0.00082
+baseline,extra-characters-in-a-string,medium,1,1,0,0,2.47,0.00010407500000000002,91.62,1,0,,17.2,0.001143
+baseline,count-of-integers,hard,1,1,0,0,4.7,0.00017730000000000003,91.78,1,0,,18.58,0.001949
+baseline,number-of-adjacent-elements-with-the-same-color,medium,0,0,0,0,3.04,0.0001602,91.08,1,0,"Test 1 Failed. Expected [0, 1, 1, 0, 2], Got [-1, -1, -2, -3, -1]. Input: 4
+[[0, 2], [1, 2], [3, 1], [1, 1], [2, 1]]",17.94,0.001761
+baseline,power-of-heroes,hard,0,0,0,0,3.23,0.00014389999999999997,92.37,1,0,"Test 1 Failed. Expected 141, Got 329. Input: [2, 1, 4]",17.88,0.001581
+baseline,find-the-longest-semi-repetitive-substring,medium,0,0,0,0,4.43,0.00011297500000000008,90.18,1,0,"Test 1 Failed. Expected 4, Got 5. Input: ""52233""",17.45,0.001241
+baseline,neighboring-bitwise-xor,medium,1,1,0,0,3.38,0.00017397500000000004,91.72,1,0,,18.32,0.001912
+baseline,find-the-punishment-number-of-an-integer,medium,0,0,0,0,3.02,0.0001018499999999999,91.6,1,0,"Test 2 Failed. Expected 1478, Got 2847. Input: 37",17.21,0.001119
+baseline,painting-the-walls,hard,0,0,0,0,3.67,0.00018392499999999993,91.56,1,0,"Test 1 Failed. Expected 3, Got 0. Input: [1, 2, 3, 2]
+[1, 2, 3, 2]",18.5,0.002022
+baseline,collecting-chocolates,medium,0,0,0,0,1.78,0.0001116750000000001,90.98,1,0,"Test 1 Failed. Expected 13, Got 36. Input: [20, 1, 15]
+5",17.23,0.001227
+baseline,determine-the-minimum-sum-of-a-k-avoiding-array,medium,1,1,0,0,3.07,8.620000000000004e-05,90.88,1,0,,17.13,0.000947
+baseline,minimum-cost-to-make-all-characters-equal,medium,0,0,0,0,21.08,0.000772425,89.7,1,0,Runtime Error on Test 1: Execution failed. Error: '<' not supported between instances of 'NoneType' and 'NoneType'. Args repr: '0011'. Params: ['s'],28.3,0.008495
+baseline,greatest-common-divisor-traversal,hard,1,1,0,0,5.54,0.00025565000000000006,90.98,1,0,,19.54,0.002811
+baseline,lexicographically-smallest-string-after-substring-operation,medium,0,0,0,0,2.33,9.900000000000013e-05,90.44,1,0,"Test 1 Failed. Expected baabc, Got bbabc. Input: ""cbabc""",16.98,0.001087
+baseline,find-the-longest-equal-subarray,medium,0,0,0,0,2.4,0.00012367500000000017,90.84,1,0,"Test 1 Failed. Expected 3, Got 6. Input: [1, 3, 2, 3, 1, 3]
+3",17.56,0.001359
+baseline,count-zero-request-servers,medium,1,1,0,0,6.38,0.0002136,90.69,1,0,,18.91,0.002348
+baseline,relocate-marbles,medium,1,1,0,0,3.52,0.00013394999999999987,91.28,1,0,,17.41,0.001472
+baseline,minimum-operations-to-make-the-integer-zero,medium,0,0,0,0,7.79,0.00019682499999999986,90.63,1,0,Timeout on Test 1,18.87,0.002163
+baseline,maximum-sum-queries,hard,0,0,0,0,6.55,0.0003131499999999999,91.77,1,0,"Test 1 Failed. Expected [6, 10, 7], Got [10, 10, 10]. Input: [4, 3, 1, 2]
+[2, 4, 9, 5]
+[[4, 1], [1, 3], [2, 5]]",20.35,0.003443
+baseline,find-the-value-of-the-partition,medium,1,1,0,0,1.44,8.487499999999988e-05,90.94,1,0,,16.85,0.000932
+baseline,special-permutations,medium,1,1,0,0,3.0,0.00011282499999999999,91.94,1,0,,17.59,0.001239
+baseline,sum-of-imbalance-numbers-of-all-subarrays,hard,1,1,0,0,3.44,0.00012997500000000006,91.06,1,0,,17.51,0.001428
+baseline,construct-the-longest-new-string,medium,0,0,0,0,7.52,0.00028614999999999977,90.75,1,0,"Test 1 Failed. Expected 12, Got 16. Input: 2
+5
+1",20.29,0.003146
+baseline,decremental-string-concatenation,medium,0,0,0,0,7.13,0.0002871499999999999,90.78,1,0,"Test 2 Failed. Expected 2, Got 3. Input: [""ab"", ""b""]",20.0,0.003157
+baseline,maximum-number-of-jumps-to-reach-the-last-index,medium,1,1,0,0,2.67,0.00011532500000000032,92.21,1,0,,17.21,0.001267
+baseline,count-complete-subarrays-in-an-array,medium,1,1,0,0,3.79,0.00016807500000000017,90.85,1,0,,18.45,0.001847
+baseline,ways-to-split-array-into-good-subarrays,medium,0,0,0,0,1.72,7.55749999999996e-05,91.8,1,0,"Test 2 Failed. Expected 1, Got 0. Input: [0, 1, 0]",16.94,0.00083
+baseline,continuous-subarrays,medium,1,1,0,0,3.8,0.00010000000000000026,91.5,1,0,,17.22,0.001098
+baseline,longest-non-decreasing-subarray-from-two-arrays,medium,1,1,0,0,3.6,0.00015975000000000017,92.1,1,0,,17.98,0.001756
+baseline,largest-element-in-an-array-after-merge-operations,medium,0,0,0,0,2.36,0.00010670000000000037,90.63,1,0,"Test 1 Failed. Expected 21, Got 12. Input: [2, 3, 7, 9, 3]",17.26,0.001172
+baseline,prime-pairs-with-target-sum,medium,1,1,0,0,1.71,8.387499999999975e-05,92.12,1,0,,17.01,0.000921
+baseline,shortest-string-that-contains-three-strings,medium,1,1,0,0,5.43,0.00021094999999999968,91.05,1,0,,18.92,0.002319
+baseline,apply-operations-to-make-all-array-elements-equal-to-zero,medium,0,0,0,0,2.77,0.00010060000000000017,91.24,1,0,"Test 1 Failed. Expected True, Got False. Input: [2, 2, 3, 1, 1, 0]
+3",17.25,0.001105
+baseline,minimum-changes-to-make-k-semi-palindromes,hard,0,0,0,0,6.84,0.0003113250000000003,90.24,1,0,"Test 1 Failed. Expected 1, Got 2. Input: ""abcac""
+2",20.37,0.003423
+baseline,ways-to-express-an-integer-as-sum-of-powers,medium,1,1,0,0,2.84,0.00011677500000000039,91.67,1,0,,17.59,0.001283
+baseline,partition-string-into-minimum-beautiful-substrings,medium,1,1,0,0,3.12,0.0001537250000000004,90.8,1,0,,17.94,0.001689
+baseline,length-of-the-longest-valid-substring,hard,1,1,0,0,2.95,0.00011682500000000009,91.24,1,0,,17.41,0.001283
+baseline,sort-vowels-in-a-string,medium,1,1,0,0,1.98,0.00010232500000000033,91.05,1,0,,17.18,0.001124
+baseline,minimum-index-of-a-valid-split,medium,1,1,0,0,4.7,0.00023134999999999996,90.81,1,0,,18.96,0.002543
+baseline,maximum-beauty-of-an-array-after-applying-operation,medium,1,1,0,0,4.47,0.00023124999999999968,90.23,1,0,,19.23,0.002542
+baseline,visit-array-positions-to-maximize-score,medium,1,1,0,0,3.58,0.00015629999999999984,91.55,1,0,,18.08,0.001718
+baseline,count-of-interesting-subarrays,medium,0,0,0,0,3.97,0.0002290249999999999,90.99,1,0,"Test 1 Failed. Expected 3, Got 0. Input: [3, 2, 4]
+2
+1",19.0,0.002518
+baseline,check-if-it-is-possible-to-split-array,medium,0,0,0,0,4.59,0.00019924999999999977,91.49,1,0,"Test 2 Failed. Expected False, Got True. Input: [2, 1, 3]
+5",18.57,0.00219
+baseline,maximum-number-of-groups-with-increasing-length,hard,1,1,0,0,1.77,0.0001004999999999999,91.11,1,0,,16.88,0.001104
+baseline,minimum-seconds-to-equalize-a-circular-array,medium,1,1,0,0,2.05,0.00011195000000000042,91.33,1,0,,17.2,0.00123
+baseline,count-stepping-numbers-in-range,hard,1,1,0,0,8.62,0.0003816749999999997,90.54,1,0,,21.88,0.004197
+baseline,minimum-time-to-make-array-sum-at-most-x,hard,0,0,0,0,8.37,0.0003315750000000006,91.5,1,0,"Test 1 Failed. Expected 3, Got 0. Input: [1, 2, 3]
+[1, 2, 3]
+4",20.96,0.003646
+baseline,count-pairs-of-points-with-distance-k,medium,1,1,0,0,4.92,0.0001754249999999999,92.05,1,0,,18.5,0.001928
+loop_only,sum-in-a-matrix,medium,0,0,0,0,11.33,0.0006057749999999994,66.72,1,0,"Test 1 Failed. Expected 15, Got 42. Input: [[7, 2, 1], [6, 4, 2], [6, 5, 3], [3, 2, 1]]",18.38,0.001851
+loop_only,maximum-or,medium,1,1,0,0,6.13,0.0005212000000000012,65.91,1,0,,17.93,0.001518
+loop_only,maximum-strength-of-a-group,medium,1,1,0,0,4.04,0.00040175000000000106,50.98,1,0,,16.84,0.00082
+loop_only,extra-characters-in-a-string,medium,1,1,0,0,5.53,0.0004948499999999998,64.1,1,0,,17.4,0.001275
+loop_only,count-of-integers,hard,1,1,0,0,7.45,0.0005716499999999999,71.02,1,0,,18.34,0.001794
+loop_only,number-of-adjacent-elements-with-the-same-color,medium,1,1,0,0,5.49,0.0005946000000000007,67.28,1,0,,17.89,0.001729
+loop_only,power-of-heroes,hard,0,0,0,0,7.12,0.0004941000000000008,68.23,1,0,"Test 1 Failed. Expected 141, Got 200. Input: [2, 1, 4]",17.38,0.001253
+loop_only,find-the-longest-semi-repetitive-substring,medium,1,1,0,0,4.47,0.00044735000000000087,59.41,1,0,,17.21,0.001078
+loop_only,neighboring-bitwise-xor,medium,1,1,0,0,5.63,0.000527200000000002,66.39,1,0,,17.45,0.001339
+loop_only,find-the-punishment-number-of-an-integer,medium,1,1,0,0,5.11,0.0005389249999999991,66.94,1,0,,18.04,0.001667
+loop_only,painting-the-walls,hard,0,0,0,0,36.63,0.0033232750000000005,78.7,1,0,"Test 1 Failed. Expected 3, Got 0. Input: [1, 2, 3, 2]
+[1, 2, 3, 2]",43.88,0.018769
+loop_only,collecting-chocolates,medium,0,0,0,0,4.3,0.0005087249999999981,61.75,1,0,"Test 1 Failed. Expected 13, Got 36. Input: [20, 1, 15]
+5",17.35,0.001309
+loop_only,determine-the-minimum-sum-of-a-k-avoiding-array,medium,1,1,0,0,4.66,0.0004092499999999999,56.49,1,0,,17.12,0.000938
+loop_only,minimum-cost-to-make-all-characters-equal,medium,0,0,0,0,18.52,0.0016581500000000006,37.48,2,0,"Test 1 Failed. Expected 2, Got 0. Input: ""0011""",19.33,0.002578
+loop_only,greatest-common-divisor-traversal,hard,1,1,0,0,10.16,0.000820849999999998,74.34,1,0,,19.77,0.002967
+loop_only,lexicographically-smallest-string-after-substring-operation,medium,0,0,0,0,6.24,0.0005090749999999977,57.81,1,0,"Test 1 Failed. Expected baabc, Got bbabc. Input: ""cbabc""",17.22,0.001247
+loop_only,find-the-longest-equal-subarray,medium,0,0,0,0,5.65,0.0005130250000000003,63.31,1,0,"Test 1 Failed. Expected 3, Got 6. Input: [1, 3, 2, 3, 1, 3]
+3",17.61,0.00139
+loop_only,count-zero-request-servers,medium,1,1,0,0,7.69,0.0006910499999999986,70.87,1,0,,19.03,0.002429
+loop_only,relocate-marbles,medium,1,1,0,0,5.66,0.0005713000000000003,62.82,1,0,,17.34,0.001429
+loop_only,minimum-operations-to-make-the-integer-zero,medium,0,0,0,0,22.69,0.001314425000000001,21.7,2,0,Timeout on Test 1,18.08,0.001642
+loop_only,maximum-sum-queries,hard,1,1,0,0,9.28,0.0008536499999999975,75.97,1,0,,19.92,0.003164
+loop_only,find-the-value-of-the-partition,medium,1,1,0,0,5.09,0.000460600000000002,51.08,1,0,,16.85,0.000933
+loop_only,special-permutations,medium,1,1,0,0,6.42,0.0004957249999999989,65.76,1,0,,17.74,0.00134
+loop_only,sum-of-imbalance-numbers-of-all-subarrays,hard,1,1,0,0,5.22,0.0005464999999999984,66.29,1,0,,17.72,0.001568
+loop_only,construct-the-longest-new-string,medium,0,0,0,0,15.24,0.0011562749999999983,75.91,1,0,"Test 1 Failed. Expected 12, Got 7. Input: 2
+5
+1",22.9,0.00487
+loop_only,decremental-string-concatenation,medium,0,0,0,0,13.2,0.0009067500000000013,75.2,1,0,"Test 3 Failed. Expected 6, Got 7. Input: [""aaa"", ""c"", ""aba""]",20.63,0.003575
+loop_only,maximum-number-of-jumps-to-reach-the-last-index,medium,1,1,0,0,4.24,0.00047834999999999545,62.54,1,0,,16.83,0.001016
+loop_only,count-complete-subarrays-in-an-array,medium,1,1,0,0,5.65,0.0004963499999999961,65.76,1,0,,17.88,0.001468
+loop_only,ways-to-split-array-into-good-subarrays,medium,0,0,0,0,7.87,0.00045542500000000236,61.31,1,0,"Test 1 Failed. Expected 3, Got 5. Input: [0, 1, 0, 0, 1]",17.35,0.001098
+loop_only,continuous-subarrays,medium,1,1,0,0,9.07,0.0005514250000000012,68.69,1,0,,18.2,0.001744
+loop_only,longest-non-decreasing-subarray-from-two-arrays,medium,1,1,0,0,5.19,0.0006204499999999946,71.95,1,0,,18.2,0.001906
+loop_only,largest-element-in-an-array-after-merge-operations,medium,0,0,0,0,7.05,0.0006062500000000026,66.21,1,0,"Test 1 Failed. Expected 21, Got 12. Input: [2, 3, 7, 9, 3]",18.47,0.001974
+loop_only,prime-pairs-with-target-sum,medium,1,1,0,0,6.19,0.0005377749999999973,67.49,1,0,,17.83,0.001459
+loop_only,shortest-string-that-contains-three-strings,medium,1,1,0,0,7.67,0.0006291999999999964,68.2,1,0,,18.34,0.001938
+loop_only,apply-operations-to-make-all-array-elements-equal-to-zero,medium,1,1,0,0,4.95,0.0004883499999999985,61.6,1,0,,17.47,0.001251
+loop_only,minimum-changes-to-make-k-semi-palindromes,hard,0,0,1,0,17.87,0.0016004000000000088,38.69,2,0,"Test 1 Failed. Expected 1, Got 2. Input: ""abcac""
+2",19.22,0.002667
+loop_only,ways-to-express-an-integer-as-sum-of-powers,medium,1,1,0,0,5.32,0.00045542500000000236,66.37,1,0,,17.47,0.001203
+loop_only,partition-string-into-minimum-beautiful-substrings,medium,1,1,0,0,6.91,0.0005672249999999976,64.75,1,0,,17.67,0.00151
+loop_only,length-of-the-longest-valid-substring,hard,1,1,0,0,4.62,0.0005159500000000011,61.55,1,0,,17.46,0.001319
+loop_only,sort-vowels-in-a-string,medium,1,1,0,0,3.77,0.000459000000000008,57.2,1,0,,17.07,0.001048
+loop_only,minimum-index-of-a-valid-split,medium,1,1,0,0,5.77,0.000652349999999996,69.38,1,0,,18.02,0.001928
+loop_only,maximum-beauty-of-an-array-after-applying-operation,medium,1,1,0,0,3.79,0.0005166499999999935,60.56,1,0,,17.34,0.001293
+loop_only,visit-array-positions-to-maximize-score,medium,1,1,0,0,4.07,0.0005379000000000009,66.44,1,0,,17.75,0.001502
+loop_only,count-of-interesting-subarrays,medium,1,1,0,0,4.32,0.0005811000000000011,64.59,1,0,,17.55,0.00156
+loop_only,check-if-it-is-possible-to-split-array,medium,0,0,0,0,5.81,0.0006572249999999974,69.64,1,0,"Test 2 Failed. Expected False, Got True. Input: [2, 1, 3]
+5",18.38,0.002066
+loop_only,maximum-number-of-groups-with-increasing-length,hard,1,1,0,0,6.57,0.0006662750000000009,65.51,1,0,,18.08,0.001898
+loop_only,minimum-seconds-to-equalize-a-circular-array,medium,0,0,0,0,3.8,0.00047109999999999513,56.21,1,0,"Test 1 Failed. Expected 1, Got 2. Input: [1, 2, 1, 2]",16.88,0.00102
+loop_only,count-stepping-numbers-in-range,hard,1,1,0,0,19.75,0.0018839249999999946,39.29,2,0,,20.37,0.003195
+loop_only,minimum-time-to-make-array-sum-at-most-x,hard,0,0,1,0,31.38,0.0028063249999999984,57.72,2,0,Timeout on Test 1,26.11,0.007046
+loop_only,count-pairs-of-points-with-distance-k,medium,1,1,0,0,4.27,0.00046554999999999513,64.46,1,0,,17.36,0.001181
+fallback_only,sum-in-a-matrix,medium,1,1,0,0,4.88,0.0004971999999999963,63.64,1,0,,17.7,0.0014
+fallback_only,maximum-or,medium,1,1,0,0,4.28,0.0004528749999999984,60.64,1,0,,17.36,0.001142
+fallback_only,maximum-strength-of-a-group,medium,1,1,0,0,3.82,0.0004188000000000039,49.97,1,0,,16.87,0.000837
+fallback_only,extra-characters-in-a-string,medium,1,1,0,0,4.39,0.000493949999999993,62.36,1,0,,17.29,0.001203
+fallback_only,count-of-integers,hard,0,0,1,0,10.37,0.0008144749999999951,74.3,1,0,"Test 1 Failed. Expected 11, Got 12. Input: ""1""
+""12""
+1
+8",20.02,0.002901
+fallback_only,number-of-adjacent-elements-with-the-same-color,medium,0,0,0,0,4.99,0.0005986249999999985,66.74,1,0,"Test 1 Failed. Expected [0, 1, 1, 0, 2], Got [-1, -1, -2, -3, -1]. Input: 4
+[[0, 2], [1, 2], [3, 1], [1, 1], [2, 1]]",17.95,0.001762
+fallback_only,power-of-heroes,hard,0,0,0,0,6.56,0.0006266500000000064,72.9,1,0,"Test 1 Failed. Expected 141, Got 392. Input: [2, 1, 4]",18.45,0.001957
+fallback_only,find-the-longest-semi-repetitive-substring,medium,1,1,0,0,4.45,0.0004673499999999914,57.26,1,0,,17.25,0.001107
+fallback_only,neighboring-bitwise-xor,medium,1,1,0,0,5.15,0.0005688499999999957,65.75,1,0,,17.84,0.001596
+fallback_only,find-the-punishment-number-of-an-integer,medium,1,1,0,0,5.19,0.0005574750000000017,61.78,1,0,,17.71,0.001447
+fallback_only,painting-the-walls,hard,0,0,1,0,9.45,0.0007630250000000005,72.93,1,0,"Test 1 Failed. Expected 3, Got 0. Input: [1, 2, 3, 2]
+[1, 2, 3, 2]",19.58,0.002731
+fallback_only,collecting-chocolates,medium,0,0,0,0,4.7,0.0005253750000000015,62.6,1,0,"Test 1 Failed. Expected 13, Got 36. Input: [20, 1, 15]
+5",17.4,0.001338
+fallback_only,determine-the-minimum-sum-of-a-k-avoiding-array,medium,1,1,0,0,8.32,0.0008245249999999996,75.34,1,0,,20.87,0.003409
+fallback_only,greatest-common-divisor-traversal,hard,1,1,0,0,6.59,0.0007154749999999932,71.62,1,0,,18.95,0.002421
+fallback_only,lexicographically-smallest-string-after-substring-operation,medium,0,0,0,0,4.85,0.0005483749999999898,56.15,1,0,"Test 1 Failed. Expected baabc, Got bbabc. Input: ""cbabc""",17.5,0.001426
+fallback_only,find-the-longest-equal-subarray,medium,0,0,0,0,4.74,0.0005042999999999853,62.39,1,0,"Test 1 Failed. Expected 3, Got 6. Input: [1, 3, 2, 3, 1, 3]
+3",17.53,0.00134
+fallback_only,count-zero-request-servers,medium,1,1,0,0,6.35,0.0006649500000000114,66.88,1,0,,18.45,0.002043
+fallback_only,relocate-marbles,medium,1,1,0,0,6.1,0.0005635999999999974,61.21,1,0,,17.31,0.001405
+fallback_only,minimum-operations-to-make-the-integer-zero,medium,0,0,1,0,7.03,0.0005380999999999997,68.36,1,0,Timeout on Test 1,17.89,0.00152
+fallback_only,maximum-sum-queries,hard,1,1,0,0,7.82,0.0007932000000000078,74.11,1,0,,19.44,0.002842
+fallback_only,find-the-value-of-the-partition,medium,1,1,0,0,4.47,0.00045412499999999967,51.32,1,0,,16.82,0.000917
+fallback_only,special-permutations,medium,1,1,0,0,6.39,0.0004913749999999883,65.64,1,0,,17.73,0.001336
+fallback_only,sum-of-imbalance-numbers-of-all-subarrays,hard,1,1,0,0,5.68,0.0005527499999999907,63.95,1,0,,17.6,0.00149
+fallback_only,decremental-string-concatenation,medium,0,0,1,0,9.72,0.0009121499999999866,74.41,1,0,"Test 3 Failed. Expected 6, Got 7. Input: [""aaa"", ""c"", ""aba""]",20.5,0.00349
+fallback_only,maximum-number-of-jumps-to-reach-the-last-index,medium,1,1,0,0,4.88,0.0005164999999999892,62.41,1,0,,16.96,0.001104
+fallback_only,count-complete-subarrays-in-an-array,medium,1,1,0,0,5.38,0.00045497499999999635,58.39,1,0,,17.39,0.001149
+fallback_only,ways-to-split-array-into-good-subarrays,medium,0,0,0,0,4.23,0.0003993999999999942,59.02,1,0,"Test 1 Failed. Expected 3, Got 6. Input: [0, 1, 0, 0, 1]",16.94,0.000832
+fallback_only,continuous-subarrays,medium,1,1,0,0,4.88,0.0005065749999999952,62.53,1,0,,17.48,0.00127
+fallback_only,longest-non-decreasing-subarray-from-two-arrays,medium,1,1,0,0,5.98,0.0006216750000000021,71.33,1,0,,18.31,0.001975
+fallback_only,largest-element-in-an-array-after-merge-operations,medium,0,0,0,0,5.19,0.0005096750000000011,61.61,1,0,"Test 1 Failed. Expected 21, Got 12. Input: [2, 3, 7, 9, 3]",17.59,0.001392
+fallback_only,prime-pairs-with-target-sum,medium,1,1,0,0,5.25,0.00043542500000000317,63.35,1,0,,17.22,0.001055
+fallback_only,shortest-string-that-contains-three-strings,medium,1,1,0,0,6.67,0.0005687749999999797,64.75,1,0,,17.77,0.001562
+fallback_only,apply-operations-to-make-all-array-elements-equal-to-zero,medium,1,1,0,0,5.2,0.00048492500000001104,64.56,1,0,,17.68,0.001387
+fallback_only,minimum-changes-to-make-k-semi-palindromes,hard,0,0,0,0,8.03,0.0007689500000000044,69.83,1,0,"Test 1 Failed. Expected 1, Got 2. Input: ""abcac""
+2",19.29,0.002712
+fallback_only,ways-to-express-an-integer-as-sum-of-powers,medium,1,1,0,0,6.09,0.0004857249999999924,68.07,1,0,,17.69,0.001349
+fallback_only,partition-string-into-minimum-beautiful-substrings,medium,1,1,0,0,5.47,0.0005611500000000103,66.94,1,0,,17.82,0.001609
+fallback_only,length-of-the-longest-valid-substring,hard,1,1,0,0,5.43,0.000536074999999997,63.08,1,0,,17.63,0.001431
+fallback_only,sort-vowels-in-a-string,medium,1,1,0,0,5.46,0.0004703749999999951,58.36,1,0,,17.14,0.001099
+fallback_only,minimum-index-of-a-valid-split,medium,1,1,0,0,5.31,0.0006189999999999946,66.12,1,0,,17.71,0.001719
+fallback_only,maximum-beauty-of-an-array-after-applying-operation,medium,1,1,0,1,21.73,0.0037088499999999996,-5.27,1,1,,20.68,0.003494
+fallback_only,visit-array-positions-to-maximize-score,medium,0,0,0,0,6.4,0.0006335249999999959,73.3,1,0,"Test 1 Failed. Expected 13, Got 6. Input: [2, 3, 6, 1, 9, 2]
+5",18.67,0.002109
+fallback_only,count-of-interesting-subarrays,medium,0,0,0,0,5.53,0.000603774999999987,67.33,1,0,"Test 2 Failed. Expected 2, Got 1. Input: [3, 1, 9, 6]
+3
+0",17.78,0.001712
+fallback_only,check-if-it-is-possible-to-split-array,medium,0,0,1,0,6.75,0.0006387999999999949,68.23,1,0,"Test 2 Failed. Expected False, Got True. Input: [2, 1, 3]
+5",18.06,0.001854
+fallback_only,maximum-number-of-groups-with-increasing-length,hard,0,0,0,0,7.28,0.000702124999999984,63.98,1,0,"Test 1 Failed. Expected 3, Got 2. Input: [1, 2, 5]",18.46,0.002152
+fallback_only,minimum-seconds-to-equalize-a-circular-array,medium,0,0,0,0,4.86,0.0004980749999999867,58.15,1,0,"Test 2 Failed. Expected 2, Got 1. Input: [2, 1, 3, 3, 2]",17.03,0.001117
+fallback_only,count-stepping-numbers-in-range,hard,1,1,0,0,8.38,0.0007596249999999999,74.36,1,0,,20.03,0.002975
+fallback_only,minimum-time-to-make-array-sum-at-most-x,hard,0,0,0,0,10.45,0.0008476999999999929,73.15,1,0,"Test 1 Failed. Expected 3, Got 0. Input: [1, 2, 3]
+[1, 2, 3]
+4",20.19,0.00314
+fallback_only,count-pairs-of-points-with-distance-k,medium,1,1,0,0,4.7,0.00044337499999999586,60.91,1,0,,17.1,0.001007
+full_system,sum-in-a-matrix,medium,1,1,0,0,6.13,0.0005231249999999993,67.4,1,0,,17.96,0.001572
+full_system,maximum-or,medium,1,1,0,0,6.11,0.0005825750000000018,69.81,1,0,,18.68,0.002011
+full_system,maximum-strength-of-a-group,medium,1,1,0,0,4.16,0.00040097499999999786,50.81,1,0,,16.85,0.000826
+full_system,extra-characters-in-a-string,medium,1,1,0,0,5.03,0.00046497500000000636,61.04,1,0,,17.16,0.001117
+full_system,count-of-integers,hard,1,1,0,0,10.02,0.0007529250000000015,76.69,1,0,,20.04,0.002911
+full_system,number-of-adjacent-elements-with-the-same-color,medium,0,0,0,0,5.26,0.000599774999999983,65.31,1,0,"Test 1 Failed. Expected [0, 1, 1, 0, 2], Got [-1, -1, -2, -3, -1]. Input: 4
+[[0, 2], [1, 2], [3, 1], [1, 1], [2, 1]]",17.78,0.001655
+full_system,power-of-heroes,hard,0,0,0,0,8.3,0.0007280500000000079,72.67,1,0,"Test 1 Failed. Expected 141, Got 188. Input: [2, 1, 4]",19.14,0.002416
+full_system,find-the-longest-semi-repetitive-substring,medium,1,1,0,0,5.21,0.0004554999999999837,56.23,1,0,,17.14,0.001036
+full_system,neighboring-bitwise-xor,medium,1,1,0,0,5.25,0.0005192749999999996,65.03,1,0,,17.3,0.001242
+full_system,find-the-punishment-number-of-an-integer,medium,1,1,0,0,6.38,0.0005114249999999959,62.2,1,0,,17.6,0.001373
+full_system,painting-the-walls,hard,0,0,0,0,20.28,0.0016062749999999903,77.9,1,0,"Test 1 Failed. Expected 3, Got 2. Input: [1, 2, 3, 2]
+[1, 2, 3, 2]",27.13,0.007712
+full_system,collecting-chocolates,medium,0,0,0,0,5.5,0.0005030999999999924,59.49,1,0,"Test 1 Failed. Expected 13, Got 36. Input: [20, 1, 15]
+5",17.16,0.001183
+full_system,determine-the-minimum-sum-of-a-k-avoiding-array,medium,1,1,0,0,5.93,0.0004417000000000032,59.97,1,0,,17.31,0.001062
+full_system,minimum-cost-to-make-all-characters-equal,medium,0,0,0,0,11.54,0.0009507000000000126,71.75,1,0,"Test 1 Failed. Expected 2, Got 0. Input: ""0011""",20.88,0.003598
+full_system,greatest-common-divisor-traversal,hard,1,1,0,0,7.79,0.0007816249999999941,72.67,1,0,,19.56,0.002828
+full_system,lexicographically-smallest-string-after-substring-operation,medium,0,0,0,0,4.46,0.000506400000000018,51.9,1,0,"Test 1 Failed. Expected baabc, Got bbabc. Input: ""cbabc""",17.07,0.001142
+full_system,find-the-longest-equal-subarray,medium,0,0,0,0,5.47,0.0005344499999999919,64.97,1,0,"Test 1 Failed. Expected 3, Got 6. Input: [1, 3, 2, 3, 1, 3]
+3",17.86,0.001558
+full_system,count-zero-request-servers,medium,1,1,0,0,7.36,0.0006691250000000065,70.37,1,0,,18.73,0.002232
+full_system,relocate-marbles,medium,1,1,0,0,5.35,0.000560374999999988,62.9,1,0,,17.36,0.001441
+full_system,minimum-operations-to-make-the-integer-zero,medium,0,0,0,0,9.21,0.0007453000000000182,76.75,1,0,Timeout on Test 2,20.12,0.002988
+full_system,maximum-sum-queries,hard,1,1,0,0,11.65,0.0009591249999999912,77.11,1,0,,21.0,0.003876
+full_system,find-the-value-of-the-partition,medium,1,1,0,0,6.71,0.0004650500000000085,51.96,1,0,,16.92,0.000981
+full_system,special-permutations,medium,1,1,0,0,6.35,0.0005177749999999842,70.21,1,0,,18.15,0.001611
+full_system,sum-of-imbalance-numbers-of-all-subarrays,hard,1,1,0,0,5.77,0.0005306249999999929,65.3,1,0,,17.57,0.001469
+full_system,construct-the-longest-new-string,medium,0,0,0,0,11.85,0.0008889249999999987,75.83,1,0,"Test 1 Failed. Expected 12, Got 11. Input: 2
+5
+1",20.94,0.003575
+full_system,decremental-string-concatenation,medium,1,0,1,0,30.89,0.002926175000000003,11.56,2,0,,20.08,0.00321
+full_system,maximum-number-of-jumps-to-reach-the-last-index,medium,1,1,0,0,7.77,0.0004905249999999917,64.75,1,0,,17.02,0.00114
+full_system,count-complete-subarrays-in-an-array,medium,1,1,0,0,5.71,0.0004533000000000037,61.77,1,0,,17.47,0.001199
+full_system,ways-to-split-array-into-good-subarrays,medium,1,1,0,0,6.5,0.0004801999999999862,63.07,1,0,,17.39,0.001127
+full_system,continuous-subarrays,medium,1,1,0,0,7.44,0.000544425000000015,66.85,1,0,,17.98,0.001602
+full_system,longest-non-decreasing-subarray-from-two-arrays,medium,1,1,0,0,8.34,0.0006396499999999916,72.61,1,0,,18.49,0.002093
+full_system,largest-element-in-an-array-after-merge-operations,medium,0,0,0,0,9.32,0.0005330250000000064,63.59,1,0,"Test 1 Failed. Expected 21, Got 12. Input: [2, 3, 7, 9, 3]",17.73,0.001482
+full_system,prime-pairs-with-target-sum,medium,1,1,0,0,28.51,0.000448350000000014,63.99,1,0,,17.3,0.001109
+full_system,shortest-string-that-contains-three-strings,medium,1,1,0,0,10.98,0.000692550000000014,69.95,1,0,,18.92,0.00232
+full_system,apply-operations-to-make-all-array-elements-equal-to-zero,medium,1,1,0,0,6.14,0.0005544249999999973,65.76,1,0,,18.13,0.001682
+full_system,minimum-changes-to-make-k-semi-palindromes,hard,0,0,0,0,32.81,0.0016177750000000019,39.45,2,0,"Test 1 Failed. Expected 1, Got 2. Input: ""abcac""
+2",19.31,0.002724
+full_system,ways-to-express-an-integer-as-sum-of-powers,medium,1,1,0,0,5.67,0.0005040000000000044,66.87,1,0,,17.74,0.001383
+full_system,partition-string-into-minimum-beautiful-substrings,medium,1,1,0,0,6.79,0.0005631749999999852,65.94,1,0,,17.69,0.001525
+full_system,length-of-the-longest-valid-substring,hard,0,0,0,0,9.45,0.0007184749999999962,70.42,1,0,"Test 1 Failed. Expected 4, Got 5. Input: ""cbaaaabc""
+[""aaa"", ""cb""]",19.42,0.002612
+full_system,sort-vowels-in-a-string,medium,1,1,0,0,7.41,0.0004761249999999939,62.0,1,0,,17.22,0.001149
+full_system,minimum-index-of-a-valid-split,medium,1,1,0,0,6.24,0.0006757500000000027,69.05,1,0,,18.2,0.002042
+full_system,maximum-beauty-of-an-array-after-applying-operation,medium,0,0,0,0,5.66,0.0005662749999999911,60.97,1,0,"Test 1 Failed. Expected 3, Got 4. Input: [4, 6, 1, 2]
+2",17.7,0.00153
+full_system,visit-array-positions-to-maximize-score,medium,1,1,0,0,7.58,0.0006042249999999999,70.98,1,0,,18.38,0.001919
+full_system,count-of-interesting-subarrays,medium,1,1,0,0,7.55,0.0006589249999999908,69.75,1,0,,18.23,0.002011
+full_system,check-if-it-is-possible-to-split-array,medium,0,0,0,0,7.8,0.0005901500000000115,70.59,1,0,"Test 2 Failed. Expected False, Got True. Input: [2, 1, 3]
+5",17.86,0.001726
+full_system,maximum-number-of-groups-with-increasing-length,hard,0,0,0,0,7.45,0.0005723749999999861,60.22,1,0,"Test 2 Failed. Expected 2, Got 3. Input: [2, 1, 2]",17.45,0.001481
+full_system,minimum-seconds-to-equalize-a-circular-array,medium,0,0,0,0,8.95,0.0007150749999999817,69.25,1,0,"Test 2 Failed. Expected 2, Got 1. Input: [2, 1, 3, 3, 2]",18.95,0.002383
+full_system,count-stepping-numbers-in-range,hard,1,1,0,0,14.9,0.0008391750000000253,74.98,1,0,,20.57,0.003332
+full_system,minimum-time-to-make-array-sum-at-most-x,hard,0,0,0,0,20.41,0.0012246500000000216,76.56,1,0,"Test 1 Failed. Expected 3, Got -1. Input: [1, 2, 3]
+[1, 2, 3]
+4",23.75,0.005486
+full_system,count-pairs-of-points-with-distance-k,medium,1,1,0,0,11.62,0.0007374500000000006,73.13,1,0,,19.6,0.002657
+fallback_only,minimum-cost-to-make-all-characters-equal,medium,0,0,0,0,8.47,0.0005297250000000001,64.25,1,0,"Test 1 Failed. Expected 2, Got 3. Input: ""0011""",17.47,0.001351
+fallback_only,construct-the-longest-new-string,medium,0,0,0,0,11.53,0.0009187999999999999,74.08,1,0,"Test 1 Failed. Expected 12, Got 14. Input: 2
+5
+1",21.19,0.003744
