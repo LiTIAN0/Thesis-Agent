@@ -1,8 +1,41 @@
+# Python
 __pycache__/
 *.pyc
+
+# Data
 experiments/
 thesis_case_study/
 raw_data/
+
+# Git
 .git/
+.gitignore
+
+# Env
 .env
 .env.example
+.venv/
+venv/
+env/
+
+# SQL
+tools/
+*.db
+agent_evaluations.db
+
+# CI/CD
+tests/
+.github/
+
+# README
+README.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Cache
+.DS_Store
+Thumbs.db

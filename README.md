@@ -164,9 +164,10 @@ docker run -p 8000:8000 --env-file .env cost-aware-agent
 
 A Continuous Integration pipeline (`.github/workflows/ci.yml`) is configured to enforce code quality. On every push or pull request to the `main` branch, the pipeline automatically spins up a clean Ubuntu environment, validates dependencies, executes Pytest unit probes (e.g., `tests/test_api.py`), and performs a dry-run of the Docker build to prevent integration regressions.
 
+### 4. Data Engineering & SQL Analytics
+Implemented a Python-based ETL pipeline (`tools/csv_to_db.py`) to migrate `.csv` benchmark results into a relational database (SQLite/PostgreSQL compatible). Authored advanced SQL queries (`tools/analytics_queries.sql`) to instantly query system bottlenecks (like finding which specific tasks caused the highest latency or triggered safety vetoes), rather than relying on messy CSV files.
 
-
-### 4. Advanced Security Routing (Malicious Intent Veto)
+### 5. Advanced Security Routing (Malicious Intent Veto)
 
 The routing architecture has been upgraded to distinguish between "unsafe code generation" (which triggers local loop repairs) and "malicious user intent" (e.g., requesting a DDoS script). Malicious intent triggers an immediate, hard-coded architectural block, bypassing both the retry loop and the expensive fallback model, effectively preventing AI resource-exhaustion attacks.
 
