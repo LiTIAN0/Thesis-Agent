@@ -4,6 +4,33 @@ This repository contains the source code, experimental scripts, raw data, and ca
 
 Our framework utilizes a dynamic routing mechanism and a deterministic Chairman node to balance execution accuracy, financial cost, and system latency. While the architecture is designed to be generalizable, this repository uses code generation (HumanEval and LiveCodeBench) as the primary benchmark to validate its efficacy and compliance with EU Trustworthy AI guidelines.
 
+## System Architecture
+
+The core of this project is a dynamic, cost-aware routing system. It prioritizes a lightweight generator-critic loop for standard tasks and deterministically escalates only complex, unresolved logic failures to a top-tier fallback model.
+
+```mermaid
+
+graph TD
+    Input([User Task / Prompt]) --> Gen[Generator<br>gpt-4.1-nano]
+    
+    Gen -->|Draft Code| C1[Logic Critic]
+    Gen -->|Draft Code| C2[Safety Critic]
+    Gen -->|Draft Code| C3[Style Critic]
+    
+    C1 -->|Feedback| Chair{Chairman Node<br>Deterministic Gates}
+    C2 -->|Feedback| Chair
+    C3 -->|Feedback| Chair
+
+    Chair -- "Pass (Soft constraints ignored)" --> Out([Final Verified Code])
+    Chair -- "Malicious Intent Detected" --> Veto([Hard Veto: System Aborted])
+    
+    Chair -- "Unsafe / Logic Bug<br>(Iteration < Max)<br>Retry Feedback" --> Gen
+    Chair -- "Logic Bug Persists<br>(Iteration = Max)" --> Fallback[Expensive Fallback<br>o3-mini]
+    
+    Fallback -->|Robust Solution| Out
+
+```
+
 ## Repository Structure
 
 The repository is organized into four main directories:
@@ -96,7 +123,52 @@ jupyter notebook experiments/ablation_lcb.ipynb
 
 We must account for the inherent stochastic nature of Large Language Models. When you execute these benchmark scripts, the exact statistical metrics will likely fluctuate. The quantitative results and tables reported in the thesis represent a single run evaluation. Therefore, you should expect minor variations in the reproduced success rates, latency, and total costs. These fluctuations are a normal characteristic of generative AI systems and do not invalidate the overall cost efficiency and performance trends demonstrated by the multi-agent architecture.
 
+---
 
+
+
+## 🚀 Engineering Upgrades
+
+
+
+Following the academic validation of the architecture, this repository has been upgraded to include software engineering practices, transforming the research framework into a production-ready microservice.
+
+
+
+### 1. RESTful API Service (FastAPI)
+
+The LangGraph multi-agent workflow is encapsulated within a high-performance **FastAPI** application (`api/main.py`). 
+
+* **Observability:** The API payload exposes deep system observability, returning not just the final code, but the `chairman_summary` and a detailed array of `critic_details`, allowing frontend clients to render the exact reasoning traces of the agent council.
+
+* **Access:** Once running, interactive API documentation (Swagger UI) is automatically available at `http://localhost:8000/docs`.
+
+
+
+### 2. Containerization (Docker)
+
+The entire system, including its dependencies and entry points, has been containerized to ensure standardized, environment-agnostic deployment.
+
+```bash
+# Build the production image
+docker build -t cost-aware-agent .
+
+# Run the containerized API
+docker run -p 8000:8000 --env-file .env cost-aware-agent
+
+```
+
+
+
+### 3. CI/CD Pipeline (GitHub Actions)
+
+A Continuous Integration pipeline (`.github/workflows/ci.yml`) is configured to enforce code quality. On every push or pull request to the `main` branch, the pipeline automatically spins up a clean Ubuntu environment, validates dependencies, executes Pytest unit probes (e.g., `tests/test_api.py`), and performs a dry-run of the Docker build to prevent integration regressions.
+
+
+
+### 4. Advanced Security Routing (Malicious Intent Veto)
+
+The routing architecture has been upgraded to distinguish between "unsafe code generation" (which triggers local loop repairs) and "malicious user intent" (e.g., requesting a DDoS script). Malicious intent triggers an immediate, hard-coded architectural block, bypassing both the retry loop and the expensive fallback model, effectively preventing AI resource-exhaustion attacks.
 
 ---
 
