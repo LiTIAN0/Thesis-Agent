@@ -33,6 +33,8 @@ jobs:
 
     # 4. Run automated unit tests
     - name: Run Pytest
+      env:
+        PYTHONPATH: .
       run: |
         pytest tests/ -v
 
