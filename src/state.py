@@ -28,3 +28,4 @@ class AgentState(TypedDict):
     used_fallback: bool         # Metric: Did we use the expensive model?
     safety_veto_triggered: bool
     logic_failure_triggered: bool
+    malicious_intent_triggered: bool

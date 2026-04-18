@@ -70,6 +70,6 @@ def get_llm(model_name: str, temperature: float = 0.0):
         # OpenRouter
         return ChatOpenAI(
             api_key=os.environ.get("OPENROUTER_API_KEY"),
-            base_url=os.environ.get("OPENROUTER_BASE_URL"),
+            base_url="https://openrouter.ai/api/v1",
             **params
         )

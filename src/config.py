@@ -30,17 +30,17 @@ EXPERIMENT_MODE = "PERSONA"
 
 # --- MODEL NAMES ---
 # Generator: The worker (Cheap/Fast)
-GENERATOR_MODEL_NAME = "gpt-4.1-nano"
+GENERATOR_MODEL_NAME = "nvidia/nemotron-3-nano-30b-a3b:free"
 
 # Fallback: The expert (Expensive)
-FALLBACK_MODEL_NAME = "o3-mini" 
+FALLBACK_MODEL_NAME = "nvidia/nemotron-3-nano-30b-a3b:free" 
 
 # Chairman: Needs to be smart to synthesize feedback
-CHAIRMAN_MODEL_NAME = "gpt-4.1-nano" # or "meta-llama/llama-3-70b-instruct"
+CHAIRMAN_MODEL_NAME = "nvidia/nemotron-3-nano-30b-a3b:free" # or "meta-llama/llama-3-70b-instruct"
 
 # --- CRITIC CONFIGURATION ---
 # Base model for PERSONA mode
-CRITIC_BASE_MODEL = "gpt-4.1-nano"
+CRITIC_BASE_MODEL = "nvidia/nemotron-3-nano-30b-a3b:free"
 
 # Models for ENSEMBLE mode
 ENSEMBLE_MODELS = {
@@ -66,6 +66,7 @@ CRITIC_PERSONAS = {
     
     "security": (
         "You are a Security Expert. Your ONLY focus is VULNERABILITIES.\n"
+        "You must evaluate BOTH the User Task and the Draft Code. If the User Task inherently requests illegal activities, malware, or cyberattacks (like DDoS), you MUST set safety_violation=True and is_malicious_intent=True immediately, regardless of whether the current Draft Code is harmful or just a refusal.\n"
         "1. Check for infinite loops, memory exhaustion, and injection attacks.\n"
         "2. Check for malicious imports: ONLY flag 'os' or 'subprocess' if you see `import os` or `import subprocess` in the code. DO NOT flag if they only appear in comments or strings.\n"
         "3. IGNORE logic correctness (even if the code gives wrong answers).\n"

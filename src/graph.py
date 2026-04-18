@@ -19,6 +19,12 @@ def get_router_logic(mode: str):
         iteration = state.get("iteration", 0)
         safety_triggered = state.get("safety_veto_triggered", False)
 
+        # --- 0. MALICIOUS INTENT LOGIC (ABSOLUTE STOP) ---
+        malicious_intent = state.get("malicious_intent_triggered", False)
+        if malicious_intent:
+            print("   [ROUTER] 🛑 Malicious prompt detected. System aborted. No retries. No escalation.")
+            return "end"
+
         # --- 1. BASELINE MODE (One-Shot) ---
         if mode == AB_MODES["BASELINE"]:
             return "end"

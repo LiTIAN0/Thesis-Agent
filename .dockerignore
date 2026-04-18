@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+experiments/
+thesis_case_study/
+raw_data/
+.git/
+.env
+.env.example

@@ -8,3 +8,7 @@ tiktoken
 tqdm
 datasets
 termcolor
+fastapi
+uvicorn
+pytest
+httpx

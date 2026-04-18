@@ -1,0 +1,42 @@
+name: CI Pipeline - Build & Test
+
+# Trigger conditions: run when code is pushed to the main branch,
+# or when a Pull Request is opened targeting main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # Run on a clean Linux virtual machine provided by GitHub
+
+    steps:
+    # 1. Checkout your code into the virtual machine
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # 2. Set up Python environment
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+        cache: 'pip' # Use cache to speed up dependency installation
+
+    # 3. Install project dependencies
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest httpx
+
+    # 4. Run automated unit tests
+    - name: Run Pytest
+      run: |
+        pytest tests/ -v
+
+    # 5. Test-run Docker build (verify Dockerfile is correct and build succeeds)
+    - name: Build Docker Image
+      run: |
+        docker build -t cost-aware-agent:test .

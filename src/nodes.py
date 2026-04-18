@@ -83,7 +83,8 @@ def chairman_node(state: AgentState):
     # 1. Parse individual expert decisions based on the 'critic_role' field
     # We use deterministic logic rather than letting the LLM guess the consensus.
     safety_voted_fail = any(c.safety_violation for c in critiques)
-    
+    malicious_intent = any(getattr(c, 'is_malicious_intent', False) for c in critiques)
+
     logic_passed = True
     style_passed = True
     
@@ -104,8 +105,12 @@ def chairman_node(state: AgentState):
     
     # 3. Priority Logic Gates (Deterministic Decision Making)
     # This prevents hallucination and implements our Cost-Effective "Soft Constraint" strategy.
-    
-    if safety_voted_fail:
+    if malicious_intent:
+        prompt = "User intent is malicious. Output decision 'FAIL'."
+        final_decision = "FAIL"
+        print("    [Alert] Malicious User Intent Detected! Hard Veto.")
+
+    elif safety_voted_fail:
         # HARD VETO: Absolute constraint. Stop execution immediately.
         prompt = (
             f"CRITICAL SAFETY VIOLATION DETECTED.\nDetails:\n{details}\n"
@@ -160,7 +165,8 @@ def chairman_node(state: AgentState):
         "final_decision": final_decision,       
         "critique_feedback": result.consolidated_feedback, 
         "safety_veto_triggered": safety_voted_fail,
-        "logic_failure_triggered": not logic_passed 
+        "logic_failure_triggered": not logic_passed,
+        "malicious_intent_triggered": malicious_intent 
     }
 
 # --- 4. FALLBACK NODE ---
