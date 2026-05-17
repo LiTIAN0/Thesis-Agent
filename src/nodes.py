@@ -1,8 +1,8 @@
-from langchain_core.prompts import ChatPromptTemplate
 from src.config import *
 from src.utils import get_llm, CostTracker
 from src.schemas import CritiqueResult, ChairmanOutput
 from src.state import AgentState
+from src.prompts import CRITIC_PROMPTS 
 
 tracker = CostTracker()
 
@@ -23,7 +23,10 @@ def generator_node(state: AgentState):
         )
     
     msg = llm.invoke(prompt)
-    tracker.log_usage(GENERATOR_MODEL_NAME, len(prompt)/4, len(msg.content)/4)
+    usage = msg.response_metadata.get("token_usage", {})
+    in_tokens = usage.get("prompt_tokens", 0)
+    out_tokens = usage.get("completion_tokens", 0)
+    tracker.log_usage(GENERATOR_MODEL_NAME, in_tokens, out_tokens)
     
     return {
         "draft_code": msg.content, 
@@ -44,8 +47,9 @@ def make_critic_node(node_name: str, persona_key: str = None):
         # Determine Model and Prompt based on mode
         if EXPERIMENT_MODE == "PERSONA":
             model = CRITIC_BASE_MODEL
-            sys_prompt = CRITIC_PERSONAS[persona_key]
-            print(f"   ... Critic ({persona_key}) running ...")
+            sys_prompt = CRITIC_PROMPTS[PROMPT_MODE][persona_key]
+            print(f"   ... Critic ({persona_key} - {PROMPT_MODE}) running ...")
+            
         else:
             model = ENSEMBLE_MODELS[node_name]
             sys_prompt = GENERIC_CRITIC_PROMPT
@@ -62,7 +66,10 @@ def make_critic_node(node_name: str, persona_key: str = None):
             print(f"   [Error] Critic failed JSON parsing: {e}")
             result = CritiqueResult(is_passing=False, feedback="Format Error", safety_violation=False)
 
-        tracker.log_usage(model, len(user_prompt)/4, 100)
+        usage = result.response_metadata.get("token_usage", {}) if hasattr(result, 'response_metadata') else {}
+        in_tokens = usage.get("prompt_tokens", len(user_prompt)/4)
+        out_tokens = usage.get("completion_tokens", 50)
+        tracker.log_usage(model, in_tokens, out_tokens)
 
         result.critic_role = persona_key.capitalize() # e.g., "Security"
         return {"critiques": [result]} # Append to list
@@ -72,7 +79,6 @@ def make_critic_node(node_name: str, persona_key: str = None):
 # Instantiate nodes
 critic_1 = make_critic_node("critic_1", "logic")
 critic_2 = make_critic_node("critic_2", "security")
-critic_3 = make_critic_node("critic_3", "style")
 
 # --- 3. CHAIRMAN NODE (WITH VETO) ---
 def chairman_node(state: AgentState):
@@ -86,13 +92,10 @@ def chairman_node(state: AgentState):
     malicious_intent = any(getattr(c, 'is_malicious_intent', False) for c in critiques)
 
     logic_passed = True
-    style_passed = True
     
     for c in critiques:
         if c.critic_role == "Logic":
             logic_passed = c.is_passing
-        elif c.critic_role == "Style":
-            style_passed = c.is_passing
 
     # 2. Prepare detailed context for the Chairman LLM to summarize
     details = "\n".join([
@@ -104,7 +107,7 @@ def chairman_node(state: AgentState):
     llm = get_llm(CHAIRMAN_MODEL_NAME, temperature=0).with_structured_output(ChairmanOutput)
     
     # 3. Priority Logic Gates (Deterministic Decision Making)
-    # This prevents hallucination and implements our Cost-Effective "Soft Constraint" strategy.
+    # This prevents hallucination and implements our Cost-Effective strategy.
     if malicious_intent:
         prompt = "User intent is malicious. Output decision 'FAIL'."
         final_decision = "FAIL"
@@ -125,22 +128,10 @@ def chairman_node(state: AgentState):
         prompt = (
             f"Logic failed. The code needs functional improvement.\nDetails:\n{details}\n"
             "Your task is to summarize the logic bugs so the developer can fix them. "
-            "If there are style issues, mention them briefly as secondary tasks. "
             "You MUST output decision 'FAIL'."
         )
         final_decision = "FAIL"
         print("    [Info] Logic Failed. Triggering loop for code correction.")
-        
-    elif logic_passed and not style_passed:
-        # SOFT CONSTRAINT: Logic is correct, but Style failed (e.g., missing type hints).
-        # We OVERRIDE the Style Critic to save tokens and prevent an expensive fallback!
-        prompt = (
-            f"Logic passed, but Style failed.\nDetails:\n{details}\n"
-            "Summarize the minor style issues, but explicitly state that the core functionality is correct. "
-            "You MUST output decision 'PASS'."
-        )
-        final_decision = "PASS"
-        print("    [Info] Logic Passed but Style Failed. Overriding to PASS to save cost (Soft Constraint applied).")
         
     else:
         # PERFECT PASS: All critics agreed the code is great.
@@ -155,7 +146,10 @@ def chairman_node(state: AgentState):
     result = llm.invoke(prompt)
     
     # 5. Log usage (Original tracking mechanism preserved)
-    tracker.log_usage(CHAIRMAN_MODEL_NAME, len(prompt)/4, len(result.consolidated_feedback)/4)
+    usage = result.response_metadata.get("token_usage", {}) if hasattr(result, 'response_metadata') else {}
+    in_tokens = usage.get("prompt_tokens", 0)
+    out_tokens = usage.get("completion_tokens", 50)
+    tracker.log_usage(CHAIRMAN_MODEL_NAME, in_tokens, out_tokens)
     
     print(f"    Final Decision: {final_decision} (Logic Failed: {not logic_passed})")
     
@@ -166,13 +160,24 @@ def chairman_node(state: AgentState):
         "critique_feedback": result.consolidated_feedback, 
         "safety_veto_triggered": safety_voted_fail,
         "logic_failure_triggered": not logic_passed,
-        "malicious_intent_triggered": malicious_intent 
+        "malicious_intent_triggered": malicious_intent,
+        "ever_safety_vetoed": state.get("ever_safety_vetoed", False) or safety_voted_fail,  
+        "ever_logic_failed": state.get("ever_logic_failed", False) or not logic_passed
     }
 
 # --- 4. FALLBACK NODE ---
 def fallback_node(state: AgentState):
-    print("\n--- ESCALATION ---")
+    print("\n--- ESCALATION (or REFERENCE) ---")
     llm = get_llm(FALLBACK_MODEL_NAME, temperature=0.2)
     msg = llm.invoke(f"Solve this robustly: {state['task']}")
-    tracker.log_usage(FALLBACK_MODEL_NAME, 100, len(msg.content)/4)
-    return {"draft_code": msg.content, "used_fallback": True, "final_decision": "PASS"}
+
+    usage = msg.response_metadata.get("token_usage", {})
+    in_tokens = usage.get("prompt_tokens", 0)
+    out_tokens = usage.get("completion_tokens", 0)
+    
+    # print(f"   [Debug Token Usage] Model: {FALLBACK_MODEL_NAME}")
+    # print(f"   [Debug Token Usage] Input: {in_tokens} | Output: {out_tokens}")
+    # print(f"   [Debug Token Usage] Raw Metadata: {msg.response_metadata}")
+    
+    tracker.log_usage(FALLBACK_MODEL_NAME, in_tokens, out_tokens)
+    return {"draft_code": msg.content, "used_fallback": True, "final_decision": "PASS", "iteration": state.get("iteration", 0) + 1}

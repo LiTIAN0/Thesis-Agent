@@ -8,6 +8,7 @@ from langchain_core.callbacks import BaseCallbackHandler
 from typing import Dict, Any, List
 from uuid import UUID
 import json
+import textwrap
 
 os.environ["HF_DATASETS_CACHE"] = "data/hf_cache" 
 os.environ["HF_HOME"] = "data/hf_home" 
@@ -44,8 +45,8 @@ class LatencyTrackerCallback(BaseCallbackHandler):
 
 def estimate_gpt_cost(prompt: str, completion: str):
     """
-    Calculates how much it WOULD cost if we used GPT-5 for this task.
-    This serves as the 'Baseline' for comparison.
+    Calculates how much it WOULD cost if we used fallback model for this task.
+    This is a rough estimate to test the system.
     """
     # --- PRICING CONSTANTS (Per 1M Tokens) ---
     # Update these based on current API prices
@@ -109,7 +110,7 @@ def load_lcb_streaming(limit=50):
             
         if item['difficulty'] not in ['medium', 'hard']:
             continue
-            
+
         tasks.append(item)
         print(f"✅ Found task: {item['question_title']} ({item['difficulty']})")
         
@@ -122,7 +123,7 @@ def load_lcb_streaming(limit=50):
 def run_experiment():
     #print("📥 Loading Dataset (HumanEval tasks)...")
     #dataset = load_dataset("openai_humaneval", split="test[32:33]") 
-    dataset = load_lcb_streaming(limit=1)
+    dataset = load_lcb_streaming(limit=50)
     
     app = build_graph()
     results = []
@@ -137,12 +138,19 @@ def run_experiment():
         start_total_cost = tracker.total_cost
         start_time = time.time()
 
-        task_prompt = (
-            f"Write a Python function to solve this:\n"
-            f"{item['question_content']}\n"
-            f"Input format: {item['public_test_cases']}\n" 
-            f"Provide the complete function in a ```python``` block."
-        )
+        task_prompt = textwrap.dedent(fr"""\
+            Write a Python function to solve this problem.
+            Problem:
+            {item['question_content']}
+
+            Input Format Example: {item['public_test_cases']}
+
+            STRICT FORMATTING CONSTRAINTS:
+            1. ASCII ONLY: You MUST write code and comments using ONLY standard ASCII characters. NO Unicode mathematical operators (e.g., $\oplus$, $\forall$, $\in$), emojis, or non-standard characters.
+            2. PYTHON SYNTAX: Ensure flawless Python indentation (use 4 spaces per indent level). You MUST meticulously check that all parentheses '()', brackets '[]', braces '{{}}', and string literals (both regular quotes and triple quotes) are properly closed and terminated.
+            3. DATA TYPES & SCOPE: Strictly track variable types, especially DO NOT call list methods (like .sort, .append) on integers. Ensure all required positional arguments are correctly passed in functions.
+            4. OUTPUT FORMAT: Provide the COMPLETE code inside a single ```python ... ``` block. Do not truncate or omit any necessary imports.
+        """)
         
         # Initial State
         state = {
@@ -189,7 +197,7 @@ def run_experiment():
                     is_fallback = "fallback" in current_node_name or node_output.get("used_fallback", False)
                     
                     # Create Snapshot
-                    snapshot_iter = "Fallback (GPT-5)" if is_fallback else running_state.get("iteration", 0)
+                    snapshot_iter = "Fallback (o3-mini)" if is_fallback else running_state.get("iteration", 0)
 
                     current_code = extract_code_from_markdown(node_output.get("draft_code", ""))
                     
@@ -261,7 +269,7 @@ def run_experiment():
             # A. Actual Cost (Delta)
             task_actual_cost = end_total_cost - start_total_cost
             
-            # B. Baseline Cost (Hypothetical GPT-5)
+            # B. Baseline Cost (Hypothetical Expensive model)
             raw_output = running_state.get("draft_code", "")
             gpt_baseline_cost = estimate_gpt_cost(task_prompt, raw_output)
             
@@ -281,8 +289,8 @@ def run_experiment():
             # 3. Analyze Votes (Who passed, who failed?)
             # We look at the LAST round of critiques
             critiques = running_state.get("critiques", [])
-            # Since critiques accumulate, we take the last 3 (assuming 3 critics)
-            last_round_critiques = critiques[-3:] if len(critiques) >= 3 else critiques
+            # Since critiques accumulate, we take the last 2 (assuming 2 critics)
+            last_round_critiques = critiques[-2:] if len(critiques) >= 2 else critiques
             
             pass_count = sum(1 for c in last_round_critiques if c.is_passing)
             total_count = len(last_round_critiques)
@@ -350,7 +358,7 @@ def run_experiment():
                 "llm_time_share (%)": round((llm_latency / total_latency * 100), 1) if total_latency > 0 else 0,
                 # --- THE MONEY COLUMNS ---
                 "actual_cost ($)": round(task_actual_cost, 6),
-                "gpt_baseline ($)": round(gpt_baseline_cost, 6),
+                "reference ($)": round(gpt_baseline_cost, 6),
                 "savings (%)": round(savings, 2),
                 "final_votes": final_vote,
                 "safety_veto": safety_triggered,

@@ -29,3 +29,6 @@ class AgentState(TypedDict):
     safety_veto_triggered: bool
     logic_failure_triggered: bool
     malicious_intent_triggered: bool
+
+    ever_safety_vetoed: bool
+    ever_logic_failed: bool

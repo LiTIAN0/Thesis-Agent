@@ -52,7 +52,7 @@ class RobustCaseStudyReporter:
                 continue
             
             has_issue = True
-            role_icon = "🧠" if "Logic" in c.critic_role else "🎨" if "Style" in c.critic_role else "🛡️"
+            role_icon = "🧠" if "Logic" in c.critic_role else "🛡️"
             
             # Header line
             status = "✅ PASS" if c.is_passing else "❌ FAIL"

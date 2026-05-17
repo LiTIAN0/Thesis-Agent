@@ -3,7 +3,7 @@ from src.state import AgentState
 from src.config import MAX_RETRIES, AB_MODES
 from src.nodes import (
     generator_node, chairman_node, fallback_node,
-    critic_1, critic_2, critic_3
+    critic_1, critic_2
 )
 
 # Default to FULL_SYSTEM if no mode is provided
@@ -25,8 +25,8 @@ def get_router_logic(mode: str):
             print("   [ROUTER] 🛑 Malicious prompt detected. System aborted. No retries. No escalation.")
             return "end"
 
-        # --- 1. BASELINE MODE (One-Shot) ---
-        if mode == AB_MODES["BASELINE"]:
+        # --- 1. BASELINE/REFERENCE MODE (One-Shot) ---
+        if mode in [AB_MODES["BASELINE"], AB_MODES["REFERENCE"]]:
             return "end"
 
         # --- 2. SUCCESS CONDITION ---
@@ -34,7 +34,7 @@ def get_router_logic(mode: str):
             return "success"
         
         # --- 3. SAFETY VETO LOGIC ---
-        # If unsafe, we try to fix locally (Loop), but NEVER escalate to GPT-5.
+        # If unsafe, we try to fix locally (Loop), but NEVER escalate to the expensive fallback model.
         if safety_triggered:
             # Only retry if we are in a mode that supports looping
             if mode in [AB_MODES["LOOP_ONLY"], AB_MODES["FULL_SYSTEM"]]:
@@ -45,7 +45,7 @@ def get_router_logic(mode: str):
             print("   [ROUTER] 🛑 Safety Veto Persists. Max retries reached. Hard Stop (No Escalation).")
             return "end" 
 
-        # --- 4. LOGIC/STYLE ERROR ROUTING ---
+        # --- 4. LOGIC ERROR ROUTING ---
         
         # Mode: LOOP_ONLY (Retry locally, then give up)
         if mode == AB_MODES["LOOP_ONLY"]:
@@ -74,6 +74,13 @@ def build_graph(mode: str = DEFAULT_MODE):
     """
     workflow = StateGraph(AgentState)
 
+    # Reference Mode: Use only fallback model
+    if mode == AB_MODES["REFERENCE"]:
+        workflow.add_node("reference", fallback_node)
+        workflow.set_entry_point("reference")
+        workflow.add_edge("reference", END)
+        return workflow.compile()
+
     # --- Add Nodes ---
     workflow.add_node("generator", generator_node)
     
@@ -86,7 +93,6 @@ def build_graph(mode: str = DEFAULT_MODE):
     # Complex Modes: Add Council
     workflow.add_node("critic_logic", critic_1)
     workflow.add_node("critic_security", critic_2)
-    workflow.add_node("critic_style", critic_3)
     workflow.add_node("chairman", chairman_node)
     
     # Add Fallback only if mode supports it
@@ -99,12 +105,10 @@ def build_graph(mode: str = DEFAULT_MODE):
     # Fan-out (Parallel Critics)
     workflow.add_edge("generator", "critic_logic")
     workflow.add_edge("generator", "critic_security")
-    workflow.add_edge("generator", "critic_style")
 
     # Fan-in (Aggregation)
     workflow.add_edge("critic_logic", "chairman")
     workflow.add_edge("critic_security", "chairman")
-    workflow.add_edge("critic_style", "chairman")
 
     # --- Conditional Routing ---
     # Define the map based on what the router returns
