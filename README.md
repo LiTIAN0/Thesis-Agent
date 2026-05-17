@@ -11,24 +11,56 @@ The core of this project is a dynamic, cost-aware routing system. It prioritizes
 ```mermaid
 
 graph TD
-    Input([User Task / Prompt]) --> Gen[Generator<br>gpt-4.1-nano]
-    
-    Gen -->|Draft Code| C1[Logic Critic]
-    Gen -->|Draft Code| C2[Safety Critic]
-    Gen -->|Draft Code| C3[Style Critic]
-    
-    C1 -->|Feedback| Chair{Chairman Node<br>Deterministic Gates}
-    C2 -->|Feedback| Chair
-    C3 -->|Feedback| Chair
+    %% Define Styles
+    classDef input_output fill:#f3f4f6,stroke:#374151,stroke-width:2px;
+    classDef generator fill:#eff6ff,stroke:#1d4ed8,stroke-width:2px;
+    classDef critic fill:#eff6ff,stroke:#2563eb,stroke-width:2px;
+    classDef router fill:#fff7ed,stroke:#c2410c,stroke-width:2px;
+    classDef oracle fill:#fef2f2,stroke:#b91c1c,stroke-width:2px;
+    classDef veto fill:#fef2f2,stroke:#991b1b,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef subgraphStyle fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,stroke-dasharray: 5 5;
 
-    Chair -- "Pass (Soft constraints ignored)" --> Out([Final Verified Code])
-    Chair -- "Malicious Intent Detected" --> Veto([Hard Veto: System Aborted])
-    
-    Chair -- "Unsafe / Logic Bug<br>(Iteration < Max)<br>Retry Feedback" --> Gen
-    Chair -- "Logic Bug Persists<br>(Iteration = Max)" --> Fallback[Expensive Fallback<br>o3-mini]
-    
-    Fallback -->|Robust Solution| Out
+    %% Nodes
+    IN([Task Input]):::input_output
+    OUT([Final Output]):::input_output
 
+    subgraph LOOP [Lightweight Repair Loop]
+        direction TB
+        GEN("<b>Generator Agent</b><br/>(Initial Draft & Repair)"):::generator
+        
+        LOGIC("<b>Logic Critic</b><br/>(Algorithm & Syntax)"):::critic
+        SAFETY("<b>Safety Critic</b><br/>(Trustworthy AI)"):::critic
+        
+        CHAIR{"<b>Chairman Node</b><br/>(Deterministic Routing Logic)"}:::router
+    end
+
+    ORACLE("<b>Fallback Oracle</b><br/>(Frontier Model)"):::oracle
+    VETO("<b>Safety Veto</b><br/>(Outputs Failure Flag)"):::veto
+
+    %% Forward Connections
+    IN --> GEN
+    
+    GEN -- "Parallel Eval" --> LOGIC
+    GEN -- "Parallel Eval" --> SAFETY
+    
+    LOGIC --> CHAIR
+    SAFETY --> CHAIR
+
+    %% Routing Outputs from Chairman
+    CHAIR -- "<b>Pass</b><br/>(All Constraints Met)" --> OUT
+    
+    CHAIR -- "<b>Escalate</b> (Logic Flaw)<br/>Zero-Shot Prompt" --> ORACLE
+    CHAIR -- "<b>Hard Veto</b> (Safety Flaw)<br/>No Escalation" --> VETO
+
+    %% Backward Retry Connection
+    CHAIR -. "<b>Retry within Budget</b><br/>(Synthesized Feedback for Logic/Safety Fix)" .-> GEN
+
+    %% Terminal Connections to Output
+    ORACLE -- "Fallback Response" --> OUT
+    VETO -- "Veto Flag" --> OUT
+
+    %% Apply Style to Subgraph
+    style LOOP fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,stroke-dasharray: 5 5 
 ```
 
 ## Repository Structure
@@ -37,16 +69,16 @@ The repository is organized into four main directories:
 
 ### 1. `src/` (Core Framework & Use-Case Modules)
 This folder contains the core multi-agent logic built with LangGraph, alongside specific implementations for the code generation benchmark.
-* **`config.py`**: Configuration settings like models and critic behavior.
+* **`config.py`**: Configuration settings like models and critic prompts.
 * **`graph.py`**: Defines the LangGraph workflow, routing logic, and the deterministic Chairman node.
-* **`nodes.py`**: Implementation of the individual agents (Generator, Logic Critic, Safety Critic, Style Critic, Chairman, and Fallback).
+* **`nodes.py`**: Implementation of the individual agents (Generator, Logic Critic, Safety Critic, Chairman, and Fallback).
 * **`schemas.py`**: Pydantic models for structured outputs and state management.
 * **`state.py`**: Defines the shared state passed between nodes during execution.
 * **`utils.py`**: Helper functions for cost tracking and API calls.
 * **Use-Case Specific Scripts (Code Generation)**:
   * **`execution.py`**: Sandboxed environment execution for generated Python code.
   * **`reporting.py`**: Harness to format and save execution traces for case studies.
-  * **`prompt.py`**: Contains four distinct prompt configurations used in our sensitivity analysis:
+  * **`prompts.py`**: Contains four distinct prompt configurations used in our sensitivity analysis:
     1. *Initial Prompts* (used in early pilot studies).
     2. *Evidence-Based Prompts* (requires exact quoting to mitigate hallucination).
     3. *Loose Prompts* (simulates a rapid prototyping environment).
@@ -61,7 +93,7 @@ This directory contains the scripts used to run the ablation studies and sensiti
 
 ### 3. `thesis_case_study/` (Qualitative Analysis Logs)
 This folder contains the complete, unedited execution logs for the six case studies discussed in Chapter 7 of the thesis.
-* `Case_A.md` to `Case_F.md`: These files document the initial draft, critic feedback, chairman synthesis, structural refinement, and the final routing decision for each selected task. They highlight system behaviors such as resource exhaustion defense, parsing artifacts, and residual hallucination.
+* `Case_A.md` to `Case_F.md`: These files document the initial draft, critic feedback, chairman synthesis, structural refinement, and the final routing decision for each selected task. They highlight system behaviors such as resource exhaustion defense, parsing artifacts, and Safety Critic hallucination.
 
 ### 4. `raw_data/` (Evaluation Metrics)
 This directory stores raw CSV outputs generated by the experiment scripts. It provides full transparency into cost, latency, and routing paths.
@@ -121,7 +153,7 @@ jupyter notebook experiments/ablation_lcb.ipynb
 
 **A Note on Reproducibility:**
 
-We must account for the inherent stochastic nature of Large Language Models. When you execute these benchmark scripts, the exact statistical metrics will likely fluctuate. The quantitative results and tables reported in the thesis represent a single run evaluation. Therefore, you should expect minor variations in the reproduced success rates, latency, and total costs. These fluctuations are a normal characteristic of generative AI systems and do not invalidate the overall cost efficiency and performance trends demonstrated by the multi-agent architecture.
+We must account for the inherent stochastic nature of Large Language Models. When you execute these benchmark scripts, the exact statistical metrics will likely fluctuate. Therefore, you should expect minor variations in the reproduced success rates, latency, and total costs. These fluctuations are a normal characteristic of generative AI systems and do not invalidate the overall cost efficiency and performance trends demonstrated by the multi-agent architecture.
 
 ---
 
